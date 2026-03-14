@@ -1,0 +1,73 @@
+# Rust Async Roof Angle Calculation Service — Walkthrough
+
+## Что сделано
+
+Создан асинхронный микросервис на Rust в директории `async_service/` со следующей структурой:
+
+```
+async_service/
+├── Cargo.toml
+├── .env
+└── src/
+    ├── main.rs
+    ├── models.rs
+    ├── calculation.rs
+    ├── handlers.rs
+    └── server.rs
+```
+
+### Ключевые файлы
+
+| Файл | Описание |
+|------|----------|
+| [.env](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/.env) | Конфигурация: `HOST`, `LISTEN_PORT`, `ASYNC_TOKEN`, `CALLBACK_BASE_URL` |
+| [models.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/models.rs) | Структуры данных: [CalcRequest](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/models.rs#13-18), [RoofingMaterial](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/models.rs#5-10), [MaterialResult](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/models.rs#21-25), [CallbackPayload](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/models.rs#28-32) |
+| [calculation.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/calculation.rs) | Формула расчёта + 4 юнит-теста |
+| [handlers.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/handlers.rs) | POST handler + async spawn + callback |
+| [server.rs](file:///Users/l.pylakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/server.rs) | Настройки и запуск actix-web сервера |
+
+### Логика работы
+
+1. `POST /api/roof_angle_calculation/{id}/finish` — принимает `snow_load`, `wind_load`, `materials[]`
+2. Сервис сразу возвращает `200 OK`
+3. В фоне (`tokio::spawn`) вычисляет оптимальный угол для каждого материала
+4. Ждёт 5–10 секунд (имитация долгих вычислений)
+5. Отправляет PUT callback на `{CALLBACK_BASE_URL}/api/roof_angle_calculation/{id}/callback` с `async_token` и результатами
+
+### Валидация
+- `snow_load` и `wind_load` — обязательные поля (`i32`). Если отсутствуют, serde автоматически возвращает **400 Bad Request** с описанием ошибки
+- Пустой массив `materials` — возвращает **400** с сообщением
+
+## Тесты
+
+```
+running 4 tests
+test calculation::tests::test_calculate_clamped_to_max ... ok
+test calculation::tests::test_calculate_all ... ok
+test calculation::tests::test_calculate_clamped_to_min ... ok
+test calculation::tests::test_calculate_known_values ... ok
+
+test result: ok. 4 passed; 0 failed
+```
+
+## Запуск
+
+```bash
+cd async_service
+cargo run
+```
+
+Сервер запустится на `localhost:8083`. Пример запроса:
+
+```bash
+curl -X POST http://localhost:8083/api/roof_angle_calculation/1/finish \
+  -H "Content-Type: application/json" \
+  -d '{
+    "snow_load": 200,
+    "wind_load": 100,
+    "materials": [
+      {"id": 1, "min_angle": 15, "max_angle": 90},
+      {"id": 2, "min_angle": 30, "max_angle": 60}
+    ]
+  }'
+```

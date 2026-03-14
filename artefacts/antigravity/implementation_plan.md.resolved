@@ -1,0 +1,83 @@
+# Rust Async Roof Angle Calculation Service
+
+Async microservice on Rust that accepts a POST request with roofing materials and load data, immediately returns HTTP 200, then asynchronously calculates optimal tilt angles for each material and sends results back to the main backend via a callback endpoint.
+
+## Proposed Changes
+
+### Project Initialization
+
+#### [NEW] [Cargo.toml](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/Cargo.toml)
+
+Rust project manifest with dependencies: `tokio`, `reqwest`, `serde`, `serde_json`, `dotenv`, `actix-web`, `rand`.
+
+#### [NEW] [.env](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/.env)
+
+Environment config:
+- `HOST` — server host (default `localhost`)
+- `LISTEN_PORT` — server port (default `8083`)
+- `ASYNC_TOKEN` — secret key sent in callback
+- `CALLBACK_BASE_URL` — base URL of the main backend (default `http://localhost:8080`)
+
+---
+
+### Data Models
+
+#### [NEW] [models.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/models.rs)
+
+Structs:
+- `RoofingMaterial` — input material with `id: i64`, `min_angle: i32`, `max_angle: i32`
+- `CalcRequest` — incoming request body: `snow_load: Option<i32>`, `wind_load: Option<i32>`, `materials: Vec<RoofingMaterial>`
+- `MaterialResult` — per-material result: `id: i64`, `optimal_angle: i32`
+- `CallbackPayload` — callback body sent to the main backend: `async_token: String`, `results: Vec<MaterialResult>`
+
+---
+
+### Calculation Logic
+
+#### [NEW] [calculation.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/calculation.rs)
+
+- `calculate_optimal_angle(snow_load, wind_load, material) -> i32` — implements the formula: `max(α_min, min(α_max, arctan((Sg/200)*(W0/50)) + (2/7)*α_min))`. Returns midpoint `(min+max)/2` if loads are `None`.
+- `calculate_all(req: &CalcRequest) -> Vec<MaterialResult>` — iterates over all materials and calculates angle for each.
+- Unit tests with `#[cfg(test)]` module.
+
+---
+
+### HTTP Handlers
+
+#### [NEW] [handlers.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/handlers.rs)
+
+- `POST /api/roof_angle_calculation/{id}/finish` handler:
+  1. Parses `id` from URL path and body as `CalcRequest`
+  2. Returns `200 OK` with `{"message": "Data received successfully"}` immediately
+  3. Spawns async task via `tokio::spawn` that:
+     - Calls `calculate_all` to compute results
+     - Sleeps 5–10 seconds (`rand::thread_rng().gen_range(5..=10)`)
+     - Sends PUT to `{CALLBACK_BASE_URL}/api/roof_angle_calculation/{id}/callback` with `CallbackPayload`
+- `init(cfg)` — registers the route
+
+---
+
+### Server Setup
+
+#### [NEW] [server.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/server.rs)
+
+- `Settings` struct loaded from env: `host`, `port`, `async_token`, `callback_base_url`
+- `start_server(settings)` — launches actix-web HttpServer
+
+#### [NEW] [main.rs](file:///Users/l.poljakov/Documents/BMSTU/Development%20of%20internet%20applications/Development-of-Internet-Applications-Async-Service/async_service/src/main.rs)
+
+Entry point: loads settings, starts server.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- `cargo test` — unit tests for formula in `calculation.rs`:
+  - Test with known snow/wind loads and material angles
+  - Test with `None` loads → midpoint result
+  - Test boundary conditions (result clamped to min/max)
+
+### Manual Verification
+- `cargo run` — confirm server starts on configured port
+- Send a POST request via `curl` to the `/api/roof_angle_calculation/1/finish` endpoint and verify 200 response
