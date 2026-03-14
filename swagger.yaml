@@ -1,0 +1,1263 @@
+basePath: /api
+definitions:
+  domain.AngleCalculationDetailResponse:
+    properties:
+      completed_at:
+        description: Время завершения заявки
+        type: string
+      created_at:
+        description: Дата создания заявки
+        type: string
+      creator_id:
+        description: ID создателя заявки
+        type: integer
+      formed_at:
+        description: Время формирования заявки
+        type: string
+      moderator_id:
+        description: ID модератора (если назначен)
+        type: integer
+      roofing_material_count:
+        description: Количество материалов в заявке
+        type: integer
+      roofing_materials:
+        description: Материалы в заявке
+        items:
+          $ref: '#/definitions/domain.RoofingMaterialInCalculation'
+        type: array
+      snow_load:
+        description: Снеговая нагрузка
+        type: integer
+      status:
+        description: Статус заявки
+        type: string
+      tilt_angle_calculation_id:
+        description: ID заявки
+        type: integer
+      wind_load:
+        description: Ветровая нагрузка
+        type: integer
+    type: object
+  domain.AngleCalculationFinishRequest:
+    properties:
+      status:
+        description: 'Новый статус: "completed" или "rejected"'
+        type: string
+    required:
+    - status
+    type: object
+  domain.AngleCalculationListResponse:
+    properties:
+      tilt_angle_calculation_count:
+        description: Общее количество заявок
+        type: integer
+      tilt_angle_calculations:
+        description: Массив заявок
+        items:
+          $ref: '#/definitions/domain.AngleCalculationResponse'
+        type: array
+    type: object
+  domain.AngleCalculationResponse:
+    properties:
+      completed_at:
+        description: Время завершения заявки
+        type: string
+      created_at:
+        description: Дата создания заявки
+        type: string
+      creator_id:
+        description: ID создателя заявки
+        type: integer
+      formed_at:
+        description: Время формирования заявки
+        type: string
+      moderator_id:
+        description: ID модератора (если назначен)
+        type: integer
+      roofing_material_count:
+        description: Количество материалов в заявке
+        type: integer
+      snow_load:
+        description: Снеговая нагрузка
+        type: integer
+      status:
+        description: Статус заявки
+        type: string
+      tilt_angle_calculation_id:
+        description: ID заявки
+        type: integer
+      wind_load:
+        description: Ветровая нагрузка
+        type: integer
+    type: object
+  domain.AngleCalculationUpdateRequest:
+    properties:
+      snow_load:
+        description: Новое значение снеговой нагрузки
+        type: integer
+      wind_load:
+        description: Новое значение ветровой нагрузки
+        type: integer
+    type: object
+  domain.DraftRoofAngleCalculationInfo:
+    properties:
+      roofing_materials_count:
+        type: integer
+      tilt_angle_calculation_id:
+        description: -1 если нет draft заявки
+        type: integer
+    type: object
+  domain.LoginResponse:
+    properties:
+      access_token:
+        description: Краткоживущий access-токен (JWT)
+        type: string
+      expires_in:
+        description: Время жизни access-токена в секундах
+        type: integer
+      is_moderator:
+        description: Признак модератора (администратора)
+        type: boolean
+      login:
+        description: Логин пользователя
+        type: string
+      refresh_token:
+        description: Долгоживущий refresh-токен
+        type: string
+      user_id:
+        description: Идентификатор пользователя
+        type: integer
+    type: object
+  domain.LogoutRequest:
+    properties:
+      refresh_token:
+        description: Опциональный refresh-токен для отзыва
+        type: string
+    type: object
+  domain.MaterialThicknessUpdateRequest:
+    properties:
+      thickness:
+        description: Новое значение толщины (мм)
+        type: integer
+    type: object
+  domain.RoofingMaterialDetailResponse:
+    properties:
+      description:
+        description: Описание материала
+        type: string
+      is_delete:
+        description: Пометка, что материал удалён (soft delete)
+        type: boolean
+      max_tilt_angle:
+        description: Максимально допустимый угол наклона
+        type: integer
+      min_tilt_angle:
+        description: Минимально допустимый угол наклона
+        type: integer
+      photo:
+        description: URL фотографии материала
+        type: string
+      roofing_material_id:
+        description: Идентификатор материала
+        type: integer
+      title:
+        description: Название материала
+        type: string
+      video_url:
+        description: URL видео материала (MinIO)
+        type: string
+    type: object
+  domain.RoofingMaterialInCalculation:
+    properties:
+      is_delete:
+        description: Пометка, что материал удалён (soft delete)
+        type: boolean
+      max_tilt_angle:
+        description: Максимально допустимый угол наклона
+        type: integer
+      min_tilt_angle:
+        description: Минимально допустимый угол наклона
+        type: integer
+      optimal_tilt_angle:
+        description: Рассчитанный оптимальный угол наклона (для completed)
+        type: integer
+      photo:
+        description: URL фотографии материала
+        type: string
+      roofing_material_id:
+        description: Идентификатор материала
+        type: integer
+      thickness:
+        description: Выбранная толщина материала (если задана)
+        type: integer
+      title:
+        description: Название материала
+        type: string
+    type: object
+  domain.RoofingMaterialRequest:
+    properties:
+      description:
+        description: Описание материала
+        type: string
+      max_tilt_angle:
+        description: Максимальный угол наклона
+        type: integer
+      min_tilt_angle:
+        description: Минимальный угол наклона
+        type: integer
+      title:
+        description: Название материала
+        type: string
+    required:
+    - max_tilt_angle
+    - min_tilt_angle
+    - title
+    type: object
+  domain.RoofingMaterialResponse:
+    properties:
+      is_delete:
+        description: Пометка, что материал удалён (soft delete)
+        type: boolean
+      max_tilt_angle:
+        description: Максимально допустимый угол наклона
+        type: integer
+      min_tilt_angle:
+        description: Минимально допустимый угол наклона
+        type: integer
+      photo:
+        description: URL фотографии материала
+        type: string
+      roofing_material_id:
+        description: Идентификатор материала
+        type: integer
+      title:
+        description: Название материала
+        type: string
+    type: object
+  domain.RoofingMaterialsListResponse:
+    properties:
+      roofing_materials:
+        description: Массив материалов
+        items:
+          $ref: '#/definitions/domain.RoofingMaterialResponse'
+        type: array
+    type: object
+  domain.StatusResponse:
+    properties:
+      status:
+        description: Статус операции ("success" и т.п.)
+        type: string
+    type: object
+  domain.UserLoginRequest:
+    properties:
+      login:
+        description: Логин пользователя
+        type: string
+      password:
+        description: Пароль пользователя
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  domain.UserRegisterRequest:
+    properties:
+      login:
+        description: Логин пользователя
+        type: string
+      password:
+        description: Пароль пользователя
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  domain.UserResponse:
+    properties:
+      is_moderator:
+        description: Является ли пользователь модератором
+        type: boolean
+      login:
+        description: Логин пользователя
+        type: string
+      user_id:
+        description: Идентификатор пользователя
+        type: integer
+    type: object
+  domain.UserUpdateRequest:
+    properties:
+      login:
+        description: Новый логин (опционально)
+        type: string
+      password:
+        description: Новый пароль (опционально)
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: RoofMaster Support
+    url: https://example.com
+  description: API для расчета оптимального угла наклона кровли, управления кровельными
+    материалами и заявками.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: RoofMaster API
+  version: "1.0"
+paths:
+  /roof_angle_calculation:
+    get:
+      description: Возвращает список заявок пользователя с опциональной фильтрацией
+        по статусу и датам.
+      parameters:
+      - description: Фильтр по статусу
+        in: query
+        name: status
+        type: string
+      - description: Дата от (YYYY-MM-DD)
+        in: query
+        name: from-date
+        type: string
+      - description: Дата до (YYYY-MM-DD)
+        in: query
+        name: to-date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Список заявок пользователя
+      tags:
+      - roof angle calculations
+  /roof_angle_calculation/{id}:
+    delete:
+      description: Удаляет заявку пользователя (меняет статус на deleted).
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.StatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Удалить заявку
+      tags:
+      - roof angle calculations
+    get:
+      description: Возвращает заявку и список материалов в ней.
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Детальная информация о заявке
+      tags:
+      - roof angle calculations
+    put:
+      consumes:
+      - application/json
+      description: Обновляет параметры заявки (снеговая и ветровая нагрузки).
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Параметры заявки
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.AngleCalculationUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Обновить заявку
+      tags:
+      - roof angle calculations
+  /roof_angle_calculation/{id}/{material_id}:
+    delete:
+      description: Удаляет материал из draft-заявки.
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ID материала
+        in: path
+        name: material_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Удалить материал из заявки
+      tags:
+      - roof angle calculations
+    put:
+      consumes:
+      - application/json
+      description: Обновляет толщину материала в draft-заявке.
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ID материала
+        in: path
+        name: material_id
+        required: true
+        type: integer
+      - description: Новая толщина
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.MaterialThicknessUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.RoofingMaterialInCalculation'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Обновить толщину материала
+      tags:
+      - roof angle calculations
+  /roof_angle_calculation/{id}/finish:
+    put:
+      consumes:
+      - application/json
+      description: Устанавливает статус заявки completed или rejected (только для
+        модератора).
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Новый статус заявки
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.AngleCalculationFinishRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Завершить или отклонить заявку
+      tags:
+      - roof angle calculations
+  /roof_angle_calculation/{id}/form:
+    put:
+      description: Переводит draft-заявку в статус formed.
+      parameters:
+      - description: ID заявки
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Сформировать заявку
+      tags:
+      - roof angle calculations
+  /roof_angle_calculation/current_tilt_calculation:
+    get:
+      description: Возвращает ID draft-заявки и количество материалов в ней.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.DraftRoofAngleCalculationInfo'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Информация о текущей draft-заявке
+      tags:
+      - roof angle calculations
+  /roofing_materials:
+    get:
+      description: Возвращает список всех кровельных материалов с опциональным поиском
+        по названию.
+      parameters:
+      - description: Поиск по названию материала
+        in: query
+        name: roofing_material
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.RoofingMaterialsListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Список кровельных материалов
+      tags:
+      - roofing materials
+    post:
+      consumes:
+      - application/json
+      description: Создает новый кровельный материал (только для администратора).
+      parameters:
+      - description: Данные материала
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RoofingMaterialRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.RoofingMaterialDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Создать кровельный материал
+      tags:
+      - roofing materials
+  /roofing_materials/{id}:
+    delete:
+      description: Помечает материал как удаленный (только для администратора).
+      parameters:
+      - description: ID материала
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.StatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Удалить кровельный материал
+      tags:
+      - roofing materials
+    get:
+      description: Возвращает кровельный материал по идентификатору.
+      parameters:
+      - description: ID материала
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.RoofingMaterialDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Материал по ID
+      tags:
+      - roofing materials
+    put:
+      consumes:
+      - application/json
+      description: Обновляет существующий кровельный материал (только для администратора).
+      parameters:
+      - description: ID материала
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные материала
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RoofingMaterialRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.RoofingMaterialDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Обновить кровельный материал
+      tags:
+      - roofing materials
+  /roofing_materials/{id}/photo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Загружает фото для материала в MinIO и обновляет URL (только для
+        администратора).
+      parameters:
+      - description: ID материала
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Файл изображения
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.RoofingMaterialDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Загрузить фото материала
+      tags:
+      - roofing materials
+  /roofing_materials/{id}/roof_angle_calculation:
+    post:
+      description: Добавляет материал в текущую draft-заявку пользователя.
+      parameters:
+      - description: ID материала
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AngleCalculationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Добавить материал в заявку
+      tags:
+      - roofing materials
+  /user:
+    get:
+      description: Возвращает данные текущего авторизованного пользователя.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Информация о текущем пользователе
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Обновляет логин и/или пароль текущего пользователя.
+      parameters:
+      - description: Данные для обновления
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UserUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Обновление данных пользователя
+      tags:
+      - user
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Аутентифицирует пользователя и возвращает пару access/refresh токенов.
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Вход пользователя
+      tags:
+      - auth
+  /user/logout:
+    post:
+      consumes:
+      - application/json
+      description: Отзывает access токен (blacklist в Redis) и опционально refresh
+        токен.
+      parameters:
+      - description: Токены для выхода
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.StatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Выход пользователя
+      tags:
+      - auth
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового пользователя с логином и паролем.
+      parameters:
+      - description: Данные для регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UserRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Регистрация пользователя
+      tags:
+      - auth
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,1116 @@
+{
+	"info": {
+		"_postman_id": "roofmaster-api-collection",
+		"name": "RoofMaster API",
+		"description": "Коллекция для тестирования REST API системы расчета оптимального угла наклона кровли",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User (Пользователь)",
+			"item": [
+				{
+					"name": "1. Register - Регистрация",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"newuser\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Login - Вход (user)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"user\",\n  \"password\": \"user123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Login - Вход (moderator)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"moderator\",\n  \"password\": \"moderator123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get User Info - Информация о пользователе",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Update User - Обновить пользователя",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"updated_login\",\n  \"password\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Logout - Выход",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"<REFRESH_TOKEN>\" \n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Refresh Tokens - Обновить токены",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"<REFRESH_TOKEN>\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roofing Materials (Материалы)",
+			"item": [
+				{
+					"name": "1. Get All Materials - Список всех материалов",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials?roofing_material=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials"
+							],
+							"query": [
+								{
+									"key": "roofing_material",
+									"value": "",
+									"description": "Поиск по названию материала"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Material by ID - Материал по ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 OK (example)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/roofing_materials/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"roofing_materials",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n  \"roofing_material_id\": 1,\n  \"is_delete\": false,\n  \"title\": \"Металлочерепица\",\n  \"description\": \"...\",\n  \"photo\": \"http://localhost:9000/media/metallocherepitsa.jpg\",\n  \"video_url\": \"http://localhost:9000/media/metallocherepitsa.mp4\",\n  \"max_tilt_angle\": 90,\n  \"min_tilt_angle\": 24\n}"
+						}
+					]
+				},
+				{
+					"name": "3. Create Material - Создать материал (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Новый материал\",\n  \"description\": \"Описание нового материала\",\n  \"max_tilt_angle\": 60,\n  \"min_tilt_angle\": 15\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Update Material - Обновить материал (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Обновленное название\",\n  \"description\": \"Обновленное описание\",\n  \"max_tilt_angle\": 70,\n  \"min_tilt_angle\": 20\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Delete Material - Удалить материал (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Upload Photo - Загрузить фото (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/1/photo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"1",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Add to Calculation - Добавить в заявку",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/1/roof_angle_calculation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"1",
+								"roof_angle_calculation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roof Angle Calculation (Заявки)",
+			"item": [
+				{
+					"name": "1. Get Current Calculation - Текущая заявка (draft)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/current_tilt_calculation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"current_tilt_calculation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get All Calculations - Список заявок",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Calculations with Filter - Фильтр по статусу",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation?status=formed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "formed"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Calculations with Date Filter - Фильтр по датам",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation?from-date=2025-01-01&to-date=2025-12-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation"
+							],
+							"query": [
+								{
+									"key": "from-date",
+									"value": "2025-01-01"
+								},
+								{
+									"key": "to-date",
+									"value": "2025-12-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Calculation by ID - Заявка по ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Update Calculation - Обновить заявку",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"snow_load\": 150,\n  \"wind_load\": 80\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Form Calculation - Сформировать заявку",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/form",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"form"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Finish Calculation - Completed (MODERATOR)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"completed\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/finish",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Finish Calculation - Rejected (MODERATOR)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"rejected\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/finish",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10. Update Material Thickness - Обновить толщину",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"thickness\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11. Remove Material - Удалить материал из заявки",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12. Delete Calculation - Удалить заявку",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13. Callback from Async Service - Результат расчёта (ASYNC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"async_token\": \"secret\",\n  \"results\": [\n    {\"id\": 1, \"optimal_angle\": 68},\n    {\"id\": 2, \"optimal_angle\": 45}\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/callback",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"callback"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Demo Scenario - Демо сценарий",
+			"item": [
+				{
+					"name": "Step 1 - Login as User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"user\",\n  \"password\": \"user123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 2 - Get Materials List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 3 - Add Material 1 to Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/1/roof_angle_calculation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"1",
+								"roof_angle_calculation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 4 - Add Material 2 to Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roofing_materials/2/roof_angle_calculation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roofing_materials",
+								"2",
+								"roof_angle_calculation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 5 - Check Current Calculation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/current_tilt_calculation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"current_tilt_calculation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 6 - Get Draft Calculation Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 7 - Update Material Thickness",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"thickness\": 8\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 8 - Update Calculation (snow & wind)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"snow_load\": 200,\n  \"wind_load\": 100\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 9 - Form Calculation",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/form",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"form"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 10 - Login as Moderator",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"moderator\",\n  \"password\": \"moderator123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 11 - Complete Calculation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"completed\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1/finish",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 12 - Get Completed Calculation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/roof_angle_calculation/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Async Service (Асинхронный сервис)",
+			"item": [
+				{
+					"name": "1. Start Calculation - Инициировать расчёт",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"snow_load\": 200,\n  \"wind_load\": 100,\n  \"materials\": [\n    {\"id\": 1, \"min_angle\": 15, \"max_angle\": 90},\n    {\"id\": 2, \"min_angle\": 30, \"max_angle\": 60}\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/roof_angle_calculation/1/finish",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"roof_angle_calculation",
+								"1",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
